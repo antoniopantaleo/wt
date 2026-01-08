@@ -2,34 +2,23 @@ package cmd
 
 import (
 	"fmt"
-	"os/exec"
+
+	"wt/internal/app"
 
 	"github.com/spf13/cobra"
 )
 
-// listCmd represents the list command
-var listCmd = &cobra.Command{
-	Use:   "list",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+func NewListCmd(deps app.Dependencies) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "list",
+		Short: "List all current git worktrees",
+		Long:  "List all current git worktrees in the repository.",
+		Run:   runList,
+	}
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: runList,
+	return cmd
 }
 
 func runList(cmd *cobra.Command, args []string) {
-	command := exec.Command("git", "worktree", "list", "--porcelain")
-	out, err := command.Output()
-	if err != nil {
-		fmt.Println("Error executing git worktree list:", err)
-		return
-	}
-	fmt.Println(string(out))
-}
-
-func init() {
-	rootCmd.AddCommand(listCmd)
+	fmt.Println("Mock response")
 }

@@ -1,7 +1,17 @@
 package main
 
-import "github.com/antoniopantaleo/wt/cmd"
+import (
+	"os"
+
+	"wt/cmd"
+	"wt/internal/app"
+)
 
 func main() {
-	cmd.Execute()
+	deps := app.Dependencies{}
+	cmd := cmd.NewRootCmd(deps)
+	err := cmd.Execute()
+	if err != nil {
+		os.Exit(1)
+	}
 }

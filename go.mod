@@ -1,4 +1,4 @@
-module github.com/antoniopantaleo/wt
+module wt
 
 go 1.25.5
 
