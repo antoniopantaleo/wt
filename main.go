@@ -4,11 +4,17 @@ import (
 	"os"
 
 	"wt/cmd"
-	"wt/internal/app"
+	"wt/internal/domain"
+	"wt/internal/git"
+	"wt/internal/ui"
 )
 
+
 func main() {
-	deps := app.Dependencies{}
+	deps := domain.Dependencies{
+		Git: git.ExecGit{},
+		Renderer: ui.FmtRenderer{},
+	}
 	cmd := cmd.NewRootCmd(deps)
 	err := cmd.Execute()
 	if err != nil {

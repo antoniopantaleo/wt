@@ -2,24 +2,23 @@
 package cmd
 
 import (
-	"wt/internal/app"
+	"wt/internal/domain"
 
 	"github.com/spf13/cobra"
 )
 
-func NewRootCmd(deps app.Dependencies) *cobra.Command {
+func NewRootCmd(deps domain.Dependencies) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "wt",
-		Short: "A manager for git worktrees",
-		Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+		Version: "0.1.0",
+		Use:     "wt",
+		Short:   "A manager for git worktrees",
 	}
 
-	cmd.AddCommand(NewListCmd(deps))
+	list := NewListCmd(deps)
+	cmd.AddCommand(list)
+
+	cmd.AddGroup(&cobra.Group{ID: "daily", Title: "Daily usage"})
+	list.GroupID = "daily"
 
 	return cmd
 }
