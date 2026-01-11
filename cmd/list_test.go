@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"testing"
+	"reflect"
 
 	"wt/internal/domain"
 
@@ -10,20 +11,26 @@ import (
 
 type mockConfigStore struct {}
 func (s mockConfigStore) GetManagedPaths() ([]string, error) {
-	return []string{"mock path 1"}, nil
+	return []string{"/Users/antonio/Development/TestProject"}, nil
 }
 
 type mockRenderer struct {
-	result string
+	branches []string
 }
 func (r *mockRenderer) RenderWorktrees(worktrees []domain.Worktree) {
-	r.result = "test"
+	for _, worktree := range worktrees {
+		r.branches = append(r.branches, worktree.Branch)
+	}
 }
 
 type mockGit struct {}
 func (g mockGit) GetWorktreesFromPath(path string) []domain.Worktree {
 	return []domain.Worktree{
-		{Path: "Example path one"},
+		{	Path: "/Users/antonio/Development/Worktrees/TestList/develop",
+			RepoPath: "/Users/antonio/Development/TestProject",
+			Branch: "develop",
+			HeadSHA: "4e04b2b0961c494fb643d91c8956813dbfcc799d",
+		},
 	}
 }
 
@@ -50,7 +57,7 @@ func TestListCommand(t *testing.T) {
 	if err != nil {
 		t.Errorf("Expected to pass with no error, got %v insted", err)
 	}
-	if renderer.result != "test" {
-		t.Errorf("Expected 'result', received %v instead", renderer.result)
+	if !reflect.DeepEqual(renderer.branches, []string{"develop"}) {
+		t.Errorf("Expected 'develop', received %v instead", renderer.branches)
 	}
 }

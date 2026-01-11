@@ -16,6 +16,7 @@ func NewListCmd(deps domain.Dependencies) *cobra.Command {
 			managedPaths, err := deps.ConfigStore.GetManagedPaths()
 			if err != nil { return err }
 			var managedWorktrees []domain.Worktree
+			// TODO: goroutine to parallelize
 			for _, path := range managedPaths {
 				worktrees := deps.Git.GetWorktreesFromPath(path)
 				managedWorktrees = append(managedWorktrees, worktrees...)
