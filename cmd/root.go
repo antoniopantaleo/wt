@@ -28,6 +28,7 @@ func NewRootCmd(deps domain.Dependencies) *cobra.Command {
 
 	addCommand(cmd, NewListCmd(deps), "management")
 	addCommand(cmd, NewAddCmd(deps), "management")
+	addCommand(cmd, NewRemoveCmd(deps), "management")
 
 	return cmd
 }
