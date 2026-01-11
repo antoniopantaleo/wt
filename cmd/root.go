@@ -27,6 +27,7 @@ func NewRootCmd(deps domain.Dependencies) *cobra.Command {
 	cmd.AddGroup(&cobra.Group{ID: "management", Title: "Management"})
 
 	addCommand(cmd, NewListCmd(deps), "management")
+	addCommand(cmd, NewAddCmd(deps), "management")
 
 	return cmd
 }
