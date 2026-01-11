@@ -14,11 +14,19 @@ func NewRootCmd(deps domain.Dependencies) *cobra.Command {
 		Short:   "A manager for git worktrees",
 	}
 
-	list := NewListCmd(deps)
-	cmd.AddCommand(list)
+	addCommand := func(
+		root *cobra.Command, 
+		command *cobra.Command, 
+		groupID string,
+	) *cobra.Command {
+		root.AddCommand(command)
+		command.GroupID = groupID
+		return command
+	}
 
-	cmd.AddGroup(&cobra.Group{ID: "daily", Title: "Daily usage"})
-	list.GroupID = "daily"
+	cmd.AddGroup(&cobra.Group{ID: "management", Title: "Management"})
+
+	addCommand(cmd, NewListCmd(deps), "management")
 
 	return cmd
 }
