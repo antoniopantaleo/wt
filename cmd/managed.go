@@ -12,6 +12,9 @@ func NewManagedCmd(deps domain.Dependencies) *cobra.Command {
 		Use:     "managed",
 		Short:   "Show all managed repos",
 		RunE: func(cmd *cobra.Command, args []string) error {
+			paths, error := deps.ConfigStore.GetManagedPaths()
+			if error != nil { return error }
+			deps.Renderer.RenderManagedPaths(paths)	
 			return nil
 		},
 	}

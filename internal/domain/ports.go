@@ -2,6 +2,7 @@ package domain
 
 type Renderer interface {
 	RenderWorktrees(worktrees []Worktree)
+	RenderManagedPaths(paths []string)
 }
 
 type ConfigStore interface {

@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"testing"
 	"reflect"
+	"testing"
 
 	"wt/internal/domain"
 
@@ -22,6 +22,10 @@ func (r *mockRenderer) RenderWorktrees(worktrees []domain.Worktree) {
 	for _, worktree := range worktrees {
 		r.branches = append(r.branches, worktree.Branch)
 	}
+}
+
+func (r mockRenderer) RenderManagedPaths(paths []string) {
+	// No-op for this test
 }
 
 type mockGit struct {}

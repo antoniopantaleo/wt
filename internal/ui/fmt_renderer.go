@@ -12,3 +12,9 @@ func (r FmtRenderer) RenderWorktrees(worktrees []domain.Worktree) {
 		fmt.Printf("PATH\t\tBRANCH\t\tHEAD\n%v\t\t%v\t\t%v", worktree.Path, worktree.Branch, worktree.HeadSHA)
 	}
 }
+
+func (r FmtRenderer) RenderManagedPaths(paths []string) {
+	for _, path := range paths {
+		fmt.Printf("%v\n", path)
+	}
+}
