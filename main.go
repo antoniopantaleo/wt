@@ -12,7 +12,16 @@ import (
 )
 
 type XDGConfigStore struct {}
-
+func (s XDGConfigStore) Exists() bool {
+	base, err := os.UserConfigDir()
+	if err != nil { return false }
+	configPath := path.Join(base, ".wt", "config.json")
+	if _, err = os.Stat(configPath); os.IsNotExist(err) {
+		return false
+	} else {
+		return true
+	}	
+}
 func (s XDGConfigStore) GetManagedPaths() ([]string, error) {
 	base, err := os.UserConfigDir()
 	if err != nil { return nil, err }

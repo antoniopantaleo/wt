@@ -10,6 +10,7 @@ import (
 )
 
 type mockConfigStore struct {}
+func (s mockConfigStore) Exists() bool { return true }
 func (s mockConfigStore) GetManagedPaths() ([]string, error) {
 	return []string{"/Users/antonio/Development/TestProject"}, nil
 }

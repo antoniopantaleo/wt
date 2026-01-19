@@ -2,6 +2,7 @@
 package cmd
 
 import (
+	"log"
 	"wt/internal/domain"
 
 	"github.com/spf13/cobra"
@@ -12,6 +13,11 @@ func NewRootCmd(deps domain.Dependencies) *cobra.Command {
 		Version: "0.1.0",
 		Use:     "wt",
 		Short:   "A manager for git worktrees",
+		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			if !deps.ConfigStore.Exists() {
+				log.Print("No config store")
+			}
+		},
 	}
 
 	addCommand := func(

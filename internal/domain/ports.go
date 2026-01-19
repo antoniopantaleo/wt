@@ -5,6 +5,7 @@ type Renderer interface {
 }
 
 type ConfigStore interface {
+	Exists() bool
 	GetManagedPaths() ([]string, error)
 }
 
