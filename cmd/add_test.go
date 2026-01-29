@@ -31,3 +31,12 @@ func TestAddNewPathFailsIfThereIsMoreThenOnePath(t *testing.T) {
 		t.Errorf("Expected error when providing more than one path, but got no error")
 	}
 }
+
+func TestAddNewPathFailsIfThereIsNoPath(t *testing.T) {
+	sut := newAddSUT()
+	sut.SetArgs([]string{})
+	err := sut.Execute()
+	if err == nil {
+		t.Errorf("Expected error when providing no path, but got no error")
+	}
+}
