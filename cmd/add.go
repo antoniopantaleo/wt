@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"wt/internal/domain"
 
 	"github.com/spf13/cobra"
@@ -12,9 +13,11 @@ func NewAddCmd(deps domain.Dependencies) *cobra.Command {
 		Use:     "add",
 		Short:   "Add new repo to managed",
 		RunE: func(cmd *cobra.Command, args []string) error {
+			if len(args) != 1 {
+				return fmt.Errorf("please provide exactly one path to add")
+			}
 			return nil
 		},
 	}
-
 	return cmd
 }
