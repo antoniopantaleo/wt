@@ -4,14 +4,18 @@ import "wt/internal/domain"
 
 // Mock config store
 
-type mockConfigStore struct{}
+type mockConfigStore struct{
+	getManagedPaths func() ([]string, error)
+	exists func() bool
+	addManagedPath func(path string) error
+}
 
-func (s mockConfigStore) Exists() bool { return true }
+func (s mockConfigStore) Exists() bool { return s.exists() }
 func (s mockConfigStore) GetManagedPaths() ([]string, error) {
-	return []string{"/Users/antonio/Development/TestProject"}, nil
+	return s.getManagedPaths()
 }
 func (s mockConfigStore) AddManagedPath(path string) error {
-	return nil
+	return s.addManagedPath(path)
 }
 
 // Mock renderer

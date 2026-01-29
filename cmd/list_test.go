@@ -11,7 +11,11 @@ import (
 
 func newListSUT(renderer mockRenderer) (*cobra.Command, *mockRenderer) {
 	deps := domain.Dependencies{
-		ConfigStore: mockConfigStore{},
+		ConfigStore: mockConfigStore{
+			getManagedPaths: func() ([]string, error) {
+				return []string{"/Users/antonio/Development/TestProject"}, nil
+			},
+		},
 		Renderer: &renderer,
 		Git: mockGit{},
 	}
