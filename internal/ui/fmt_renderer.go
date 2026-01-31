@@ -2,19 +2,29 @@ package ui
 
 import (
 	"fmt"
+	"os"
+	"text/tabwriter"
 	"wt/internal/domain"
 )
 
 type FmtRenderer struct{}
 
 func (r FmtRenderer) RenderWorktrees(worktrees []domain.Worktree) {
-	for _, worktree := range worktrees {
-		fmt.Printf("PATH\t\tBRANCH\t\tHEAD\n%v\t\t%v\t\t%v", worktree.Path, worktree.Branch, worktree.HeadSHA)
+	if len(worktrees) == 0 {
+		return
 	}
+
+	w := tabwriter.NewWriter(os.Stdout, 15, 0, 3, ' ', 0)
+	fmt.Fprintln(w, "PATH\tBRANCH\tHEAD")
+	fmt.Fprintln(w, "----\t------\t----")
+	for _, worktree := range worktrees {
+		fmt.Fprintf(w, "%s\t%s\t%s\n", worktree.Path, worktree.Branch, worktree.HeadSHA)
+	}
+	w.Flush()
 }
 
 func (r FmtRenderer) RenderManagedPaths(paths []string) {
 	for _, path := range paths {
-		fmt.Printf("%v\n", path)
+		fmt.Println(path)
 	}
 }
