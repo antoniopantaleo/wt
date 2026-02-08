@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"log"
+	"wt/internal/debuglog"
 	"wt/internal/domain"
 
 	"github.com/spf13/cobra"
@@ -19,7 +19,7 @@ func NewRemoveCmd(deps domain.Dependencies) *cobra.Command {
 				return fmt.Errorf("please provide exactly one path to remove")
 			}
 			path := args[0]
-			log.Printf("Removing path %v from managed paths", path)
+			debuglog.Printf("Removing path %v from managed paths", path)
 			return deps.ConfigStore.RemoveManagedPath(path)
 		},
 	}

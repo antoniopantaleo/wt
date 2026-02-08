@@ -4,9 +4,9 @@ package config
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
+	"wt/internal/debuglog"
 )
 
 type JSONConfigStore struct {
@@ -103,14 +103,14 @@ func (s JSONConfigStore) RemoveManagedPath(path string) error {
 func (s JSONConfigStore) checkConfigFile() (bool, error) {
 	_, err := os.Stat(s.Path)
 	if os.IsNotExist(err) {
-		log.Print("No config file exists")
+		debuglog.Print("No config file exists")
 		return false, err
 	}
 	if err != nil {
 		return false, err
 	}
 
-	log.Print("Config file exists")
+	debuglog.Print("Config file exists")
 	return true, nil
 }
 

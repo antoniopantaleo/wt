@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"log"
+	"wt/internal/debuglog"
 	"wt/internal/domain"
 
 	"github.com/spf13/cobra"
@@ -18,7 +18,7 @@ func NewAddCmd(deps domain.Dependencies) *cobra.Command {
 				return fmt.Errorf("please provide exactly one path to add")
 			}
 			path := args[0]
-			log.Printf("Adding path %v to managed paths", path)
+			debuglog.Printf("Adding path %v to managed paths", path)
 			deps.Git.IsGitRepo(path)
 			if !deps.Git.IsGitRepo(path) {
 				return fmt.Errorf("provided path is not a git repository")
