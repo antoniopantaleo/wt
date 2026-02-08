@@ -3,6 +3,7 @@ package config
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
 )
@@ -51,6 +52,35 @@ func (s JSONConfigStore) AddManagedPath(path string) error {
 	}
 
 	cfg.ManagedRepos = append(cfg.ManagedRepos, path)
+	return s.writeConfig(cfg)
+}
+
+func (s JSONConfigStore) RemoveManagedPath(path string) error {
+	exists, err := s.checkConfigFile()
+	if !exists {
+		return err
+	}
+	if err != nil {
+		return err
+	}
+
+	cfg, err := s.readConfig()
+	if err != nil {
+		return err
+	}
+
+	index := -1
+	for i, managedPath := range cfg.ManagedRepos {
+		if managedPath == path {
+			index = i
+			break
+		}
+	}
+	if index == -1 {
+		return fmt.Errorf("path is not in managed repositories")
+	}
+
+	cfg.ManagedRepos = append(cfg.ManagedRepos[:index], cfg.ManagedRepos[index+1:]...)
 	return s.writeConfig(cfg)
 }
 

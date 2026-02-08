@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"fmt"
+	"log"
 	"wt/internal/domain"
 
 	"github.com/spf13/cobra"
@@ -13,7 +15,12 @@ func NewRemoveCmd(deps domain.Dependencies) *cobra.Command {
 		Aliases: []string{"rm"},
 		Short:   "Remove a repo from managed",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return nil
+			if len(args) != 1 {
+				return fmt.Errorf("please provide exactly one path to remove")
+			}
+			path := args[0]
+			log.Printf("Removing path %v from managed paths", path)
+			return deps.ConfigStore.RemoveManagedPath(path)
 		},
 	}
 

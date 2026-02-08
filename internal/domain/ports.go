@@ -9,6 +9,7 @@ type ConfigStore interface {
 	Exists() bool
 	GetManagedPaths() ([]string, error)
 	AddManagedPath(path string) error
+	RemoveManagedPath(path string) error
 }
 
 type Git interface {

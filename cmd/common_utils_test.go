@@ -5,9 +5,10 @@ import "wt/internal/domain"
 // Mock config store
 
 type mockConfigStore struct {
-	getManagedPaths func() ([]string, error)
-	exists          func() bool
-	addManagedPath  func(path string) error
+	getManagedPaths   func() ([]string, error)
+	exists            func() bool
+	addManagedPath    func(path string) error
+	removeManagedPath func(path string) error
 }
 
 func (s mockConfigStore) Exists() bool { return s.exists() }
@@ -16,6 +17,9 @@ func (s mockConfigStore) GetManagedPaths() ([]string, error) {
 }
 func (s mockConfigStore) AddManagedPath(path string) error {
 	return s.addManagedPath(path)
+}
+func (s mockConfigStore) RemoveManagedPath(path string) error {
+	return s.removeManagedPath(path)
 }
 
 // Mock renderer
