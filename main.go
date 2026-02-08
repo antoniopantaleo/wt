@@ -30,7 +30,7 @@ func main() {
 		ConfigStore: config.JSONConfigStore{
 			Path: path,
 		},
-		Renderer: ui.FmtRenderer{},
+		Renderer: ui.ANSIRenderer{},
 	}
 	cmd := cmd.NewRootCmd(deps)
 	err := cmd.Execute()
