@@ -35,7 +35,9 @@ func (r mockRenderer) RenderManagedPaths(paths []string) {
 
 // Mock Git
 
-type mockGit struct{}
+type mockGit struct{
+	isGitRepo func(path string) bool
+}
 
 func (g mockGit) GetWorktreesFromPath(path string) []domain.Worktree {
 	return []domain.Worktree{
@@ -45,4 +47,8 @@ func (g mockGit) GetWorktreesFromPath(path string) []domain.Worktree {
 			HeadSHA:  "4e04b2b0961c494fb643d91c8956813dbfcc799d",
 		},
 	}
+}
+
+func (g mockGit) IsGitRepo(path string) bool {
+	return g.isGitRepo(path)
 }

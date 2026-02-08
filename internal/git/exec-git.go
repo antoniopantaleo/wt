@@ -55,3 +55,13 @@ func (g ExecGit) GetWorktreesFromPath(path string) []domain.Worktree {
 	flush()
 	return worktrees
 }
+
+
+func (g ExecGit) IsGitRepo(path string) bool {
+	cmd := exec.Command("git", "-C", path, "rev-parse", "--git-dir")
+	var out bytes.Buffer
+	// TODO: permission error when using cmd.Path = path
+	cmd.Stdout = &out
+	err := cmd.Run()
+	return err == nil
+}

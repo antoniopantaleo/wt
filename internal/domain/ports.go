@@ -13,4 +13,5 @@ type ConfigStore interface {
 
 type Git interface {
 	GetWorktreesFromPath(path string) []Worktree
+	IsGitRepo(path string) bool
 }
