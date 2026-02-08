@@ -16,7 +16,9 @@ func NewAddCmd(deps domain.Dependencies) *cobra.Command {
 			if len(args) != 1 {
 				return fmt.Errorf("please provide exactly one path to add")
 			}
-			return nil
+			path := args[0]
+			err := deps.ConfigStore.AddManagedPath(path)
+			return err
 		},
 	}
 	return cmd
