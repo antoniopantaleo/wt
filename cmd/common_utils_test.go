@@ -4,10 +4,10 @@ import "wt/internal/domain"
 
 // Mock config store
 
-type mockConfigStore struct{
+type mockConfigStore struct {
 	getManagedPaths func() ([]string, error)
-	exists func() bool
-	addManagedPath func(path string) error
+	exists          func() bool
+	addManagedPath  func(path string) error
 }
 
 func (s mockConfigStore) Exists() bool { return s.exists() }
@@ -35,7 +35,7 @@ func (r mockRenderer) RenderManagedPaths(paths []string) {
 
 // Mock Git
 
-type mockGit struct{
+type mockGit struct {
 	isGitRepo func(path string) bool
 }
 
