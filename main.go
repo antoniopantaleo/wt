@@ -15,12 +15,7 @@ func userConfigPath() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	configPath := path.Join(base, ".wt", "config.json")
-	if _, err = os.Stat(configPath); os.IsNotExist(err) {
-		return "", err
-	} else {
-		return configPath, nil
-	}
+	return path.Join(base, ".wt", "config.json"), nil
 }
 
 func main() {

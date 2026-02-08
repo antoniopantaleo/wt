@@ -7,18 +7,39 @@ import "wt/internal/domain"
 type mockConfigStore struct {
 	getManagedPaths   func() ([]string, error)
 	exists            func() bool
+	ensureExists      func() error
 	addManagedPath    func(path string) error
 	removeManagedPath func(path string) error
 }
 
-func (s mockConfigStore) Exists() bool { return s.exists() }
+func (s mockConfigStore) Exists() bool {
+	if s.exists == nil {
+		return true
+	}
+	return s.exists()
+}
+func (s mockConfigStore) EnsureExists() error {
+	if s.ensureExists == nil {
+		return nil
+	}
+	return s.ensureExists()
+}
 func (s mockConfigStore) GetManagedPaths() ([]string, error) {
+	if s.getManagedPaths == nil {
+		return []string{}, nil
+	}
 	return s.getManagedPaths()
 }
 func (s mockConfigStore) AddManagedPath(path string) error {
+	if s.addManagedPath == nil {
+		return nil
+	}
 	return s.addManagedPath(path)
 }
 func (s mockConfigStore) RemoveManagedPath(path string) error {
+	if s.removeManagedPath == nil {
+		return nil
+	}
 	return s.removeManagedPath(path)
 }
 

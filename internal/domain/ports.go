@@ -7,6 +7,7 @@ type Renderer interface {
 
 type ConfigStore interface {
 	Exists() bool
+	EnsureExists() error
 	GetManagedPaths() ([]string, error)
 	AddManagedPath(path string) error
 	RemoveManagedPath(path string) error

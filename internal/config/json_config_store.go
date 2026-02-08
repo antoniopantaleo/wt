@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 )
 
 type JSONConfigStore struct {
@@ -19,6 +20,21 @@ type storeConfig struct {
 func (s JSONConfigStore) Exists() bool {
 	_, err := os.Stat(s.Path)
 	return err == nil
+}
+
+func (s JSONConfigStore) EnsureExists() error {
+	if s.Path == "" {
+		return fmt.Errorf("config path is empty")
+	}
+	if s.Exists() {
+		return nil
+	}
+
+	if err := os.MkdirAll(filepath.Dir(s.Path), 0755); err != nil {
+		return err
+	}
+
+	return s.writeConfig(storeConfig{ManagedRepos: []string{}})
 }
 
 func (s JSONConfigStore) GetManagedPaths() ([]string, error) {
