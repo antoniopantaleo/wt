@@ -13,7 +13,7 @@ import (
 func newAddSUT(configStore domain.ConfigStore, git domain.Git) (*cobra.Command, domain.ConfigStore) {
 	deps := domain.Dependencies{
 		ConfigStore: configStore,
-		Git: git,
+		Git:         git,
 	}
 	return NewAddCmd(deps), configStore
 }
@@ -50,11 +50,11 @@ func TestAddNewPathDoesNotAddANonGitRepo(t *testing.T) {
 		t.Fatalf("failed to create empty config.json: %v", err)
 	}
 	sut, _ := newAddSUT(
-		config.XDGConfigStore{
-			Path: tmpDir+"/config.json"}, 
-			mockGit{
-				isGitRepo: func(path string) bool {
-					return false
+		config.JSONConfigStore{
+			Path: tmpDir + "/config.json"},
+		mockGit{
+			isGitRepo: func(path string) bool {
+				return false
 			},
 		},
 	)
@@ -71,11 +71,11 @@ func TestAddNewPathCanAddNewGitRepo(t *testing.T) {
 		t.Fatalf("failed to create empty config.json: %v", err)
 	}
 	sut, store := newAddSUT(
-		config.XDGConfigStore{
-			Path: tmpDir+"/config.json"}, 
-			mockGit{
-				isGitRepo: func(path string) bool {
-					return true
+		config.JSONConfigStore{
+			Path: tmpDir + "/config.json"},
+		mockGit{
+			isGitRepo: func(path string) bool {
+				return true
 			},
 		},
 	)

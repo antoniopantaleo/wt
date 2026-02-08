@@ -10,7 +10,7 @@ import (
 	"wt/internal/ui"
 )
 
-func xdgConfigPath() (string, error) {
+func userConfigPath() (string, error) {
 	base, err := os.UserConfigDir()
 	if err != nil {
 		return "", err
@@ -24,10 +24,10 @@ func xdgConfigPath() (string, error) {
 }
 
 func main() {
-	path, _ := xdgConfigPath()
+	path, _ := userConfigPath()
 	deps := domain.Dependencies{
 		Git: git.ExecGit{},
-		ConfigStore: config.XDGConfigStore{
+		ConfigStore: config.JSONConfigStore{
 			Path: path,
 		},
 		Renderer: ui.FmtRenderer{},
