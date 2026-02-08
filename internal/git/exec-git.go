@@ -50,6 +50,8 @@ func (g ExecGit) GetWorktreesFromPath(path string) []domain.Worktree {
 		}
 		if branch, found := strings.CutPrefix(line, "branch "); found {
 			current.Branch = strings.TrimPrefix(branch, "refs/heads/")
+		} else if line == "detached" {
+			current.Branch = "(detached)"
 		}
 	}
 	flush()
