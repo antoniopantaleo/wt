@@ -1,35 +1,46 @@
 package cmd
 
 import (
-	"fmt"
-	"os/exec"
+	"sync"
+	"wt/internal/domain"
 
 	"github.com/spf13/cobra"
 )
 
-// listCmd represents the list command
-var listCmd = &cobra.Command{
-	Use:   "list",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+func NewListCmd(deps domain.Dependencies) *cobra.Command {
+	cmd := &cobra.Command{
+		Version: "0.1.0",
+		Use:     "list",
+		Aliases: []string{"ls"},
+		Short:   "List all currently managed git worktrees",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			managedPaths, err := deps.ConfigStore.GetManagedPaths()
+			if err != nil {
+				return err
+			}
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: runList,
-}
+			worktreesByPath := make([][]domain.Worktree, len(managedPaths))
+			var wg sync.WaitGroup
+			wg.Add(len(managedPaths))
 
-func runList(cmd *cobra.Command, args []string) {
-	command := exec.Command("git", "worktree", "list", "--porcelain")
-	out, err := command.Output()
-	if err != nil {
-		fmt.Println("Error executing git worktree list:", err)
-		return
+			for i, path := range managedPaths {
+				go func(index int, managedPath string) {
+					defer wg.Done()
+					worktreesByPath[index] = deps.Git.GetWorktreesFromPath(managedPath)
+				}(i, path)
+			}
+
+			wg.Wait()
+
+			var managedWorktrees []domain.Worktree
+			for _, worktrees := range worktreesByPath {
+				managedWorktrees = append(managedWorktrees, worktrees...)
+			}
+
+			deps.Renderer.RenderWorktrees(managedWorktrees)
+			return nil
+		},
 	}
-	fmt.Println(string(out))
-}
 
-func init() {
-	rootCmd.AddCommand(listCmd)
+	return cmd
 }
