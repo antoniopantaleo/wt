@@ -13,10 +13,8 @@ func NewAddCmd(deps domain.Dependencies) *cobra.Command {
 		Version: "0.1.0",
 		Use:     "add",
 		Short:   "Add new repo to managed",
+		Args:    cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if len(args) != 1 {
-				return fmt.Errorf("please provide exactly one path to add")
-			}
 			path := args[0]
 			debuglog.Printf("Adding path %v to managed paths", path)
 			deps.Git.IsGitRepo(path)
