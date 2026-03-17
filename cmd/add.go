@@ -21,7 +21,6 @@ func NewAddCmd(deps domain.Dependencies) *cobra.Command {
 				return fmt.Errorf("resolving path: %w", err)
 			}
 			debuglog.Printf("Adding path %v to managed paths", path)
-			deps.Git.IsGitRepo(path)
 			if !deps.Git.IsGitRepo(path) {
 				return fmt.Errorf("provided path is not a git repository")
 			}
